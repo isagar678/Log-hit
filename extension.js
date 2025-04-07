@@ -15,7 +15,7 @@ function activate(context) {
 	context.subscriptions.push(disposable);
 
 	let hugoTerminal = vscode.window.createTerminal({
-			name: 'Hugo Server'
+			name: 'Log-N-Hit'
 		});
 
 	hugoTerminal.show();
@@ -38,6 +38,10 @@ function getAllHistory(N) {
 	let historyDir
 	if ((vscode.env.shell).split('/').at(-1) === 'bash') {
 		historyDir = `${os.homedir()}/.bash_history`
+	}
+	else {
+		console.warn('You are in a windows system')
+		return
 	}
 
 	return fs.readFileSync(historyDir, 'utf-8')
