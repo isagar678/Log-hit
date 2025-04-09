@@ -90,3 +90,30 @@ ul#history-list label {
 #run-button:hover {
   background-color: #1177bb;
 }
+
+.sequence {
+  background-color: #007acc;
+  color: white;
+  border-radius: 4px;
+  padding: 0 6px;
+  font-weight: bold;
+  margin-right: 6px;
+  font-size: 0.75rem;
+  display: inline-block;
+  min-width: 20px;
+  text-align: center;
+}
+
+.history-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.order-number {
+  width: 24px;
+  text-align: right;
+  margin-right: 6px;
+  font-weight: bold;
+  color: #888;
+}
