@@ -6,7 +6,9 @@ export class CustomSidebarViewProvider implements vscode.WebviewViewProvider {
 
   private _view?: vscode.WebviewView;
 
-  constructor(private readonly _extensionUri: vscode.Uri) {}
+  constructor(private readonly _extensionUri: vscode.Uri,
+     private readonly _sendCommands: (commands: string[]) => void
+  ) {}
 
   resolveWebviewView(
     webviewView: vscode.WebviewView,
@@ -33,6 +35,11 @@ export class CustomSidebarViewProvider implements vscode.WebviewViewProvider {
           data: allFileContents
         });
       }
+      if (message.command === "runSelectedCommands") {
+        const commands: string[] = message.data;
+        this._sendCommands(commands); // this will call sendCommandsToTerminal from extension.ts
+      }
+      
     });
   }
 
@@ -65,7 +72,7 @@ export class CustomSidebarViewProvider implements vscode.WebviewViewProvider {
   <meta charset="UTF-8">
   <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${webview.cspSource}; script-src 'nonce-${nonce}';">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
+
   <link href="${styleResetUri}" rel="stylesheet">
   <link href="${styleVSCodeUri}" rel="stylesheet">
   <link href="${stylesheetUri}" rel="stylesheet">
@@ -73,25 +80,49 @@ export class CustomSidebarViewProvider implements vscode.WebviewViewProvider {
 <body>
   <section class="wrapper">
     <div class="container">
-      <h2 class="subtitle">Recent Bash History</h2>
+      <h2 class="subtitle">Command History</h2>
       <ul id="history-list"></ul>
+      <button id="run-button">Run Selected</button>
     </div>
   </section>
 
   <script nonce="${nonce}">
     const vscode = acquireVsCodeApi();
+    const selectedCommands = [];
+
     vscode.postMessage({ command: "requestData" });
 
     window.addEventListener("message", (event) => {
       const message = event.data;
       if (message.command === "sendData") {
         const list = document.getElementById("history-list");
-        message.data.forEach(item => {
+        message.data.forEach((cmd, index) => {
           const li = document.createElement("li");
-          li.textContent = item;
+          li.innerHTML = \`
+            <input type="checkbox" id="cmd_\${index}" data-cmd="\${cmd}">
+            <label for="cmd_\${index}">\${cmd}</label>
+          \`;
           list.appendChild(li);
+
+          const checkbox = li.querySelector("input");
+          checkbox.addEventListener("change", (e) => {
+            const command = e.target.getAttribute("data-cmd");
+            if (e.target.checked) {
+              selectedCommands.push(command);
+            } else {
+              const idx = selectedCommands.indexOf(command);
+              if (idx > -1) selectedCommands.splice(idx, 1);
+            }
+          });
         });
       }
+    });
+
+    document.getElementById("run-button").addEventListener("click", () => {
+      vscode.postMessage({
+        command: "runSelectedCommands",
+        data: selectedCommands
+      });
     });
   </script>
 </body>

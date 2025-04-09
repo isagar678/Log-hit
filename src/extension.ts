@@ -7,42 +7,39 @@ import * as fs from 'fs'
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-	
-	// Console diagnostic information (console.log) and errors (console.error)
-	// Will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "vscode-extension-sidebar-html" is active!');
+	console.log('Extension "vscode-extension-sidebar-html" is now active!');
 
-	const provider = new CustomSidebarViewProvider(context.extensionUri);
+	const sidebarProvider = new CustomSidebarViewProvider(
+		context.extensionUri,
+		sendCommandsToTerminal
+	);
 
+	// Register the custom sidebar view
 	context.subscriptions.push(
 		vscode.window.registerWebviewViewProvider(
 			CustomSidebarViewProvider.viewType,
-		  provider
+			sidebarProvider
 		)
-	  );
+	);
 
-	  context.subscriptions.push(
+	// Command: when the menu/title of the extension is clicked
+	context.subscriptions.push(
 		vscode.commands.registerCommand("vscodeSidebar.menu.view", () => {
-		  const message = "Menu/Title of extension is clicked !";
-		  vscode.window.showInformationMessage(message);
+			vscode.window.showInformationMessage("🔹 Extension menu clicked!");
 		})
-	  );
+	);
 
-	// Command has been defined in the package.json file
-	// Provide the implementation of the command with registerCommand
-	// CommandId parameter must match the command field in package.json
-	let openWebView = vscode.commands.registerCommand('vscodeSidebar.openview', () => {
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Command " Sidebar View [vscodeSidebar.openview] " called.');
-	});
-
-	context.subscriptions.push(openWebView);
+	// Command: open the sidebar view manually
+	context.subscriptions.push(
+		vscode.commands.registerCommand("vscodeSidebar.openview", () => {
+			vscode.window.showInformationMessage(
+				'Command "Sidebar View [vscodeSidebar.openview]" executed.'
+			);
+		})
+	);
 }
 
 export function getAllHistory(N: number): string[] {
-	const os = require('os');
-	const fs = require('fs');
-
 	let historyDir;
 	if ((vscode.env.shell).split('/').at(-1) === 'bash') {
 		historyDir = `${os.homedir()}/.bash_history`;
@@ -57,6 +54,17 @@ export function getAllHistory(N: number): string[] {
 		.slice(0, N);
 }
 
+export function sendCommandsToTerminal(commands:string[]) {
+	let logAndHitTerminal = vscode.window.createTerminal({
+		name: 'Log-N-Hit'
+	});
+
+	logAndHitTerminal.show();
+
+	for (let i = 0; i < commands.length; i++) {
+		logAndHitTerminal.sendText(commands[i])
+	}
+}
 
 // this method is called when your extension is deactivated
 export function deactivate() {}
