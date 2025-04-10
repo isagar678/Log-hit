@@ -19,13 +19,13 @@ body {
 
 .wrapper {
   width: 100%;
-  padding: 1rem 1rem 2rem 1rem;
-  box-sizing: border-box;
+  /* padding: 1rem 1rem 2rem 1rem; */
+  /* box-sizing: border-box; */
 }
 
 .container {
   background-color: var(--card-bg);
-  padding: 1rem;
+  /* padding: 1rem; */
   border-radius: var(--border-radius);
   box-shadow: var(--shadow);
   width: 100%;
@@ -52,8 +52,8 @@ ul#history-list {
 
 ul#history-list li {
   background-color: var(--bg-color);
-  padding: 0.5rem 0.8rem;
-  border-radius: 6px;
+  /* padding: 0.5rem 0.8rem; */
+  /* border-radius: 6px; */
   display: flex;
   align-items: flex-start;
 }
@@ -107,7 +107,7 @@ ul#history-list label {
 .history-item {
   display: flex;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 .order-number {
@@ -116,4 +116,16 @@ ul#history-list label {
   margin-right: 6px;
   font-weight: bold;
   color: #888;
+}
+
+.checkboxes label[num]:not([num = "@"]):before
+{
+  content: attr(num);
+}
+
+.checkboxes label:before
+{
+  content: "";
+  width: 1em;
+  display: inline-block;
 }

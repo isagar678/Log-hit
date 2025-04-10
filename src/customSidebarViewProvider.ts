@@ -71,7 +71,7 @@ export class CustomSidebarViewProvider implements vscode.WebviewViewProvider {
   <section class="wrapper">
     <div class="container">
       <h2 class="subtitle">Command History</h2>
-      <ul id="history-list"></ul>
+      <ul class="checkboxes" id="history-list"></ul>
       <button id="run-button">Run Selected</button>
     </div>
   </section>
