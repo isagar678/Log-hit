@@ -28,6 +28,7 @@ export class CustomSidebarViewProvider implements vscode.WebviewViewProvider {
 
     webviewView.webview.onDidReceiveMessage(message => {
       if (message.command === "requestData") {
+        const allFileContents = getAllHistory(message.count || 5);
         webviewView.webview.postMessage({
           command: "sendData",
           data: allFileContents
@@ -71,7 +72,18 @@ export class CustomSidebarViewProvider implements vscode.WebviewViewProvider {
   <section class="wrapper">
     <div class="container">
       <h2 class="subtitle">Command History</h2>
-      <ul class="checkboxes" id="history-list"></ul>
+<div class="dropdown-wrapper">
+  <label for="history-count">Show Last</label>
+  <select id="history-count">
+    <option value="5" selected>5</option>
+    <option value="10">10</option>
+    <option value="20">20</option>
+    <option value="30">30</option>
+    <option value="40">40</option>
+    <option value="50">50</option>
+  </select> commands
+</div>
+<ul class="checkboxes" id="history-list"></ul>
       <button id="run-button">Run Selected</button>
     </div>
   </section>

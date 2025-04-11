@@ -1,13 +1,14 @@
 :root {
-  --bg-color: rgba(255, 255, 255, 0.04);
-  --card-bg: rgba(0, 0, 0, 0.1);
   --text-color: #ffffff;
   --accent-color: #0e639c;
   --border-radius: 10px;
   --shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   --font: 'Segoe UI', sans-serif;
 }
-
+.dropdown-wrapper {
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
 body {
   background-color: transparent;
   font-family: var(--font);

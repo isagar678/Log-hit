@@ -3,8 +3,15 @@ window.addEventListener('DOMContentLoaded', () => {
     const selectedCommands = [];
     const orderSet = new Set();
 
+    let selectedCount = 5; // default
+
+    document.getElementById('history-count').addEventListener('change', (e) => {
+        selectedCount = parseInt(e.target.value);
+        vscode.postMessage({ command: 'requestData', count: selectedCount });
+    });
+
     // Send request for initial data
-    vscode.postMessage({ command: 'requestData' });
+    vscode.postMessage({ command: 'requestData', count: selectedCount });
 
     // Create a single list item
     function createListItem(cmd, index) {
@@ -49,7 +56,7 @@ window.addEventListener('DOMContentLoaded', () => {
         updateOrderDisplay();
     }
 
-    // Update A, B, C... order display
+    // Update 1,2,3... order display
     function updateOrderDisplay() {
         const allCheckboxes = document.querySelectorAll('.history-item input[type="checkbox"]');
 
