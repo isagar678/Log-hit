@@ -15,12 +15,22 @@ let logAndHitTerminal = vscode.window.createTerminal({
 export function activate(context: vscode.ExtensionContext) {
 	console.log('Extension "vscode-extension-sidebar-html" is now active!');
 
+	// Check if PowerShell history configuration is already set
+	const alreadySet = context.globalState.get<boolean>('historyConfigured');
+	if (!alreadySet) {
+		ensurePowerShellHistoryBehavior().then(success => {
+			if (success) {
+				context.globalState.update('historyConfigured', true);
+			}
+		});
+	}
+
+	// Register the custom sidebar view
 	const sidebarProvider = new CustomSidebarViewProvider(
 		context.extensionUri,
 		sendCommandsToTerminal
 	);
 
-	// Register the custom sidebar view
 	context.subscriptions.push(
 		vscode.window.registerWebviewViewProvider(
 			CustomSidebarViewProvider.viewType,
@@ -74,7 +84,7 @@ export function getAllHistory(N: number): string[] {
 	}
 }
 
-export function sendCommandsToTerminal(commands:string[]) {
+export function sendCommandsToTerminal(commands: string[]) {
 	logAndHitTerminal.show();
 
 	for (let command of commands) {
@@ -82,5 +92,43 @@ export function sendCommandsToTerminal(commands:string[]) {
 	}
 }
 
+function ensurePowerShellHistoryBehavior(): Promise<boolean> {
+	return new Promise(resolve => {
+		const profilePath = path.join(os.homedir(), 'Documents', 'PowerShell', 'Microsoft.PowerShell_profile.ps1');
+		const historyLine = `Set-PSReadLineOption -HistorySaveStyle SaveIncrementally -HistorySavePath (Get-PSReadLineOption).HistorySavePath`;
+
+		vscode.window.showInformationMessage(
+			"Do you want to enable real-time PowerShell command history saving?",
+			"Yes", "No"
+		).then(answer => {
+			if (answer === "Yes") {
+				try {
+					if (!fs.existsSync(profilePath)) {
+						fs.mkdirSync(path.dirname(profilePath), { recursive: true });
+						fs.writeFileSync(profilePath, '', 'utf-8');
+					}
+
+					const currentContent = fs.readFileSync(profilePath, 'utf-8');
+
+					if (!currentContent.includes(historyLine)) {
+						fs.appendFileSync(profilePath, `\n${historyLine}\n`, 'utf-8');
+						vscode.window.showInformationMessage("✅ PowerShell profile updated. Restart your terminal to apply changes.");
+					} else {
+						vscode.window.showInformationMessage("ℹ️ History saving is already enabled.");
+					}
+
+					resolve(true);
+				} catch (error) {
+					vscode.window.showErrorMessage("Failed to update PowerShell profile: " + error);
+					resolve(false);
+				}
+			} else {
+				vscode.window.showInformationMessage("Skipped enabling PowerShell history saving.");
+				resolve(false);
+			}
+		});
+	});
+}
+
 // this method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() { }
