@@ -3,9 +3,15 @@ import * as vscode from 'vscode';
 import { CustomSidebarViewProvider } from './customSidebarViewProvider';
 import * as os from 'os'
 import * as fs from 'fs'
+import * as path from 'path';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
+
+let logAndHitTerminal = vscode.window.createTerminal({
+	name: 'Log-N-Hit'
+});
+
 export function activate(context: vscode.ExtensionContext) {
 	console.log('Extension "vscode-extension-sidebar-html" is now active!');
 
@@ -40,29 +46,39 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 export function getAllHistory(N: number): string[] {
-	let historyDir;
-	if ((vscode.env.shell).split('/').at(-1) === 'bash') {
-		historyDir = `${os.homedir()}/.bash_history`;
+	let shell = vscode.env.shell.toLowerCase();
+	let historyFilePath: string | undefined;
+
+	if (shell.includes('bash')) {
+		// Linux/Mac: Bash history
+		historyFilePath = path.join(os.homedir(), '.bash_history');
+
+	} else if (shell.includes('powershell') || shell.includes('pwsh')) {
+		// Windows: PowerShell history
+		logAndHitTerminal.sendText(`Import-Module PSReadLine`)
+		historyFilePath = path.join(os.homedir(), 'AppData', 'Roaming', 'Microsoft', 'Windows', 'PowerShell', 'PSReadline', 'ConsoleHost_history.txt');
 	} else {
-		console.warn('You are in a windows system');
+		console.warn(`Unknown shell: ${vscode.env.shell}`);
 		return [];
 	}
 
-	return fs.readFileSync(historyDir, 'utf-8')
-		.split(/\r?\n/)
-		.reverse()
-		.slice(0, N);
+	try {
+		return fs.readFileSync(historyFilePath, 'utf-8')
+			.split(/\r?\n/)
+			.filter(line => line.trim() !== '')
+			.reverse()
+			.slice(0, N);
+	} catch (error) {
+		console.error(`Failed to read history: ${error}`);
+		return [];
+	}
 }
 
 export function sendCommandsToTerminal(commands:string[]) {
-	let logAndHitTerminal = vscode.window.createTerminal({
-		name: 'Log-N-Hit'
-	});
-
 	logAndHitTerminal.show();
 
-	for (let i = 0; i < commands.length; i++) {
-		logAndHitTerminal.sendText(commands[i])
+	for (let command of commands) {
+		logAndHitTerminal.sendText(command)
 	}
 }
 

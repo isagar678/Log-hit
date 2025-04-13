@@ -24,8 +24,6 @@ export class CustomSidebarViewProvider implements vscode.WebviewViewProvider {
 
     webviewView.webview.html = this.getHtmlContent(webviewView.webview);
 
-    const allFileContents = getAllHistory(10);
-
     webviewView.webview.onDidReceiveMessage(message => {
       if (message.command === "requestData") {
         const allFileContents = getAllHistory(message.count || 5);
