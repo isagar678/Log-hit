@@ -17,16 +17,27 @@ body {
   margin: 0;
   padding: 0;
 }
+.command-input {
+  margin-left: 0.5em;
+  width: 100%;
+  font-family: monospace;
+  font-size: 0.9em;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  background: transparent;
+  color: inherit;
+}
+.command-input:focus {
+  outline: none;
+  border-color: #007acc;
+}
 
 .wrapper {
   width: 100%;
-  /* padding: 1rem 1rem 2rem 1rem; */
-  /* box-sizing: border-box; */
 }
 
 .container {
   background-color: var(--card-bg);
-  /* padding: 1rem; */
   border-radius: var(--border-radius);
   box-shadow: var(--shadow);
   width: 100%;
@@ -129,4 +140,8 @@ ul#history-list label {
   content: "";
   width: 1em;
   display: inline-block;
+}
+
+.subtitle{
+  margin-left: 10px;
 }

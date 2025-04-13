@@ -27,15 +27,25 @@ window.addEventListener('DOMContentLoaded', () => {
         orderSpan.classList.add('order-number');
         orderSpan.textContent = '';
 
-        const label = document.createElement('label');
-        label.setAttribute('for', `cmd_${index}`);
-        label.textContent = cmd;
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = cmd;
+        input.classList.add('command-input');
+        input.dataset.index = index;
+
+        // Update selectedCommands if command is changed
+        input.addEventListener('input', () => {
+            if (checkbox.checked) {
+                selectedCommands[Array.from(orderSet).indexOf(checkbox)] = input.value;
+            }
+        });
+
 
         checkbox.addEventListener('change', handleCheckboxChange);
 
         li.appendChild(orderSpan);
         li.appendChild(checkbox);
-        li.appendChild(label);
+        li.appendChild(input);
 
         return li;
     }
@@ -43,18 +53,22 @@ window.addEventListener('DOMContentLoaded', () => {
     // Handle checkbox change
     function handleCheckboxChange(e) {
         const checkbox = e.target;
-
+        const listItem = checkbox.closest('.history-item');
+        const input = listItem.querySelector('.command-input');
+        const command = input.value;
+    
         if (checkbox.checked) {
             orderSet.add(checkbox);
-            selectedCommands.push(checkbox.dataset.cmd);
+            selectedCommands.push(command);
         } else {
             orderSet.delete(checkbox);
-            const index = selectedCommands.indexOf(checkbox.dataset.cmd);
+            const index = selectedCommands.indexOf(command);
             if (index !== -1) selectedCommands.splice(index, 1);
         }
-
+    
         updateOrderDisplay();
     }
+    
 
     // Update 1,2,3... order display
     function updateOrderDisplay() {
