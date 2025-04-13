@@ -79,7 +79,7 @@ export class CustomSidebarViewProvider implements vscode.WebviewViewProvider {
     <option value="30">30</option>
     <option value="40">40</option>
     <option value="50">50</option>
-  </select> commands
+  </select>  <label>commands</label>
 </div>
 <ul class="checkboxes" id="history-list"></ul>
       <button id="run-button">Run Selected</button>

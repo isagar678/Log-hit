@@ -31,7 +31,7 @@ export function activate(context: vscode.ExtensionContext) {
 	// Command: when the menu/title of the extension is clicked
 	context.subscriptions.push(
 		vscode.commands.registerCommand("vscodeSidebar.menu.view", () => {
-			vscode.window.showInformationMessage("🔹 Extension menu clicked!");
+			vscode.window.showInformationMessage("🔹Welcome to Log-N-Hit made by Sagar!");
 		})
 	);
 
