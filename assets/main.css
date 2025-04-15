@@ -31,9 +31,13 @@ body {
   outline: none;
   border-color: #007acc;
 }
+* {
+  box-sizing: border-box;
+}
 
 .wrapper {
   width: 100%;
+   overflow-x: hidden;
 }
 
 .container {
@@ -84,6 +88,29 @@ ul#history-list label {
   line-height: 1.4;
   cursor: pointer;
   flex: 1;
+}
+#search-box {
+  width: 100%;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.9rem;
+  font-family: var(--font);
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius);
+  background-color: var(--bg-color, #1e1e1e); /* fallback for dark theme */
+  color: var(--text-color);
+  margin-bottom: 1rem;
+  box-shadow: var(--shadow);
+  outline: none;
+  transition: border-color 0.3s ease;
+  margin-top: 1rem;
+}
+
+#search-box::placeholder {
+  color: #aaa;
+}
+
+#search-box:focus {
+  border-color: var(--accent-color);
 }
 
 #run-button {

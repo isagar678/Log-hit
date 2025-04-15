@@ -11,13 +11,14 @@ import * as path from 'path';
 let logAndHitTerminal = vscode.window.createTerminal({
 	name: 'Log-N-Hit'
 });
+let shell = vscode.env.shell.toLowerCase();
 
 export function activate(context: vscode.ExtensionContext) {
 	console.log('Extension "vscode-extension-sidebar-html" is now active!');
 
 	// Check if PowerShell history configuration is already set
 	const alreadySet = context.globalState.get<boolean>('historyConfigured');
-	if (!alreadySet) {
+	if (!alreadySet && (shell.includes('powershell') || shell.includes('pwsh'))) {
 		ensurePowerShellHistoryBehavior().then(success => {
 			if (success) {
 				context.globalState.update('historyConfigured', true);
@@ -56,7 +57,6 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 export function getAllHistory(N: number): string[] {
-	let shell = vscode.env.shell.toLowerCase();
 	let historyFilePath: string | undefined;
 
 	if (shell.includes('bash')) {
@@ -89,6 +89,9 @@ export function sendCommandsToTerminal(commands: string[]) {
 
 	for (let command of commands) {
 		logAndHitTerminal.sendText(command)
+	}
+	if (shell.includes('bash')) {
+		logAndHitTerminal.sendText(`history -a`)
 	}
 }
 

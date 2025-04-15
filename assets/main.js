@@ -50,6 +50,17 @@ window.addEventListener('DOMContentLoaded', () => {
         return li;
     }
 
+    document.getElementById('search-box').addEventListener('input', (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        const allItems = document.querySelectorAll('.history-item');
+
+        allItems.forEach(item => {
+            const input = item.querySelector('.command-input');
+            const text = input.value.toLowerCase();
+            item.style.display = text.includes(searchTerm) ? 'flex' : 'none';
+        });
+    });
+
     // Handle checkbox change
     function handleCheckboxChange(e) {
         const checkbox = e.target;
