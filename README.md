@@ -1,26 +1,92 @@
-# Sample Visual Studio Extension Using WebView View
+🐚 Terminal History Runner - VS Code Extension
+==========================================
 
-## Features
+Quickly access and re-run your terminal commands directly from VS Code!This extension fetches and displays your recent commands, including **session-based commands** that haven't yet been written to the history file.
 
-Visual Studio Code Sample extension developed to showcase WebView views using WebView API.This extension will be displayed
-in activity bar of VS Code editor, the Sidebar of VS Code editor will have one view loaded with custom UI (Html)
+🚀 Features
+-----------
 
-## Requirements
+*   📜 View recent Bash commands inside VS Code
+    
+*   🧠 Includes **unsaved session commands** using history -a
+    
+*   ✅ Select and run multiple commands directly
+    
+*   🔍 Filter your command history with a search bar
+    
+*   🎯 Sleek and responsive UI in the sidebar panel
+    
 
-No requirements to build tis project. Clone from GIT and do npm install
+📸 Preview
+----------
 
+> 
+![Extension Screenshot](https://user-images.githubusercontent.com/yourusername/preview.png)
+⚙️ How It Works
+---------------
 
-## Release Notes
+VS Code terminal sessions don’t auto-save command history unless the terminal is closed.This extension uses:
 
-Sample extension
+Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   history -a   `
 
-### 1.0.0
+to **append active session commands to .bash\_history**, ensuring nothing is missed.Then it reads and displays them in an interactive sidebar panel.
 
-Initial release
+🛠️ Usage
+---------
 
------------------------------------------------------------------------------------------------------------
-## Following extension guidelines
+1.  Open VS Code
+    
+2.  Click the **Book icon** in the Side Bar
+    
+3.  Select how many recent commands to display
+    
+4.  Use the search to filter (optional)
+    
+5.  Check commands and click **Run Selected**
+    
 
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
+📦 Installation
+---------------
 
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
+### From Marketplace
+
+👉 [Install via VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=yourname.bash-history-runner)
+
+### From VS Code
+
+1.  Open Extensions panel (Ctrl+Shift+X)
+    
+2.  Search for **Terminal History Runner**
+    
+3.  Click **Install**
+    
+
+🧪 Requirements
+---------------
+    
+*   VS Code terminal profile should use Bash or Powershell
+    
+
+> Tip: You can set the default shell from **Settings > Terminal > Integrated > Default Profile**
+
+💡 Pro Tips
+-----------
+
+*   The extension auto-runs history -a to capture session commands
+    
+*   Use the search bar for quick filtering
+    
+*   Commands are run in the **integrated terminal**
+    
+
+🙌 Contributing
+---------------
+
+Found a bug or want to suggest something cool? Open an issue or PR here:[👉 GitHub Repository](https://github.com/isagar678/Log-hit)
+
+📄 License
+----------
+
+MIT License© 2025 \[Your Name / GitHub Handle\]
+
+> Made with ❤️ for terminal power users by Sagar Bharati.
