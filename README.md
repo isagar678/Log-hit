@@ -26,8 +26,7 @@ Quickly access and re-run your terminal commands directly from VS Code!This exte
 ---------------
 
 VS Code terminal sessions don’t auto-save command history unless the terminal is closed.This extension uses:
-
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   history -a   `
+`   history -a   `
 
 to **append active session commands to .bash\_history**, ensuring nothing is missed.Then it reads and displays them in an interactive sidebar panel.
 
