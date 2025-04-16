@@ -61,6 +61,10 @@ export function getAllHistory(N: number): string[] {
 
 	if (shell.includes('bash')) {
 		// Linux/Mac: Bash history
+		for (const terminal of vscode.window.terminals) {
+			terminal.sendText('history -a')
+		}
+
 		historyFilePath = path.join(os.homedir(), '.bash_history');
 
 	} else if (shell.includes('powershell') || shell.includes('pwsh')) {
@@ -75,7 +79,7 @@ export function getAllHistory(N: number): string[] {
 	try {
 		return fs.readFileSync(historyFilePath, 'utf-8')
 			.split(/\r?\n/)
-			.filter(line => line.trim() !== '')
+			.filter(line => line.trim() !== '' && line!=='history -a')
 			.reverse()
 			.slice(0, N);
 	} catch (error) {
