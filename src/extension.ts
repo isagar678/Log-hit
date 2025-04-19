@@ -56,7 +56,7 @@ export function activate(context: vscode.ExtensionContext) {
 	);
 }
 
-export function getAllHistory(N: number): string[] {
+export function getAllHistory(N: number | string): string[] {
 	let historyFilePath: string | undefined;
 
 	if (shell.includes('bash')) {
@@ -77,11 +77,14 @@ export function getAllHistory(N: number): string[] {
 	}
 
 	try {
-		return fs.readFileSync(historyFilePath, 'utf-8')
-			.split(/\r?\n/)
-			.filter(line => line.trim() !== '' && line!=='history -a')
-			.reverse()
-			.slice(0, N);
+		const commands = fs.readFileSync(historyFilePath, 'utf-8')
+		.split(/\r?\n/)
+		.filter(line => line.trim() !== '' && line!=='history -a')
+		.reverse()	
+		if(typeof(N)== 'number'){
+			return commands.slice(0, N);
+		}
+		return commands
 	} catch (error) {
 		console.error(`Failed to read history: ${error}`);
 		return [];

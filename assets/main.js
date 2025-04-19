@@ -6,7 +6,12 @@ window.addEventListener('DOMContentLoaded', () => {
     let selectedCount = 5; // default
 
     document.getElementById('history-count').addEventListener('change', (e) => {
-        selectedCount = parseInt(e.target.value);
+        if(e.target.value !== 'all'){
+            selectedCount = parseInt(e.target.value)
+        }
+        else{
+            selectedCount = e.target.value
+        }
         vscode.postMessage({ command: 'requestData', count: selectedCount });
     });
 
@@ -67,7 +72,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const listItem = checkbox.closest('.history-item');
         const input = listItem.querySelector('.command-input');
         const command = input.value;
-    
+
         if (checkbox.checked) {
             orderSet.add(checkbox);
             selectedCommands.push(command);
@@ -76,10 +81,10 @@ window.addEventListener('DOMContentLoaded', () => {
             const index = selectedCommands.indexOf(command);
             if (index !== -1) selectedCommands.splice(index, 1);
         }
-    
+
         updateOrderDisplay();
     }
-    
+
 
     // Update 1,2,3... order display
     function updateOrderDisplay() {

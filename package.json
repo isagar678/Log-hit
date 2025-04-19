@@ -1,20 +1,23 @@
 {
   "name": "log-n-hit",
   "displayName": "Log-N-Hit",
-  "description": "This Log-N-Hit extension by Sagar helps to manage commands and ease usage of multiple commands with custom editing and searching with beautiful design and fine user experience. The extension is compatible with bash and powershell terminals which are present in windows and linux systems repectively.",
+  "description": "This Log-N-Hit extension by Sagar helps to manage commands and ease usage of multiple commands with custom editing and searching with beautiful design and fine user experience. The extension is compatible with bash and PowerShell terminals which are present in Windows and Linux systems respectively.",
   "version": "1.0.0",
-  "publisher": "log-n-hit by sagar",
-  "homepage": "https://github.com/KumarVariable/vscode-extension-sidebar-html/blob/afded57b2b4e13a002774b0d2d965b0a9024e83d/README.md",
+  "publisher": "sagar",
+  "homepage": "https://github.com/isagar678/Log-hit",
+  "bugs": {
+    "url": "https://github.com/isagar678/Log-hit/issues"
+  },
   "license": "BSD-3-Clause",
   "repository": {
     "type": "git",
-    "url": "https://github.com/KumarVariable/vscode-extension-sidebar-html.git"
+    "url": "https://github.com/isagar678/Log-hit.git"
   },
   "engines": {
     "vscode": "^1.61.0"
   },
-  "categories": ["Programming Languages","Debuggers", "Formatters","Other", "Notebooks", "Education","Testing"],
-  "keywords": ["log","logging","terminal","hit","command"],
+  "categories": ["Programming Languages", "Debuggers", "Formatters", "Other", "Notebooks", "Education", "Testing"],
+  "keywords": ["log", "logging", "terminal", "hit", "command"],
   "activationEvents": [
     "onCommand:vscodeSidebar.openview",
     "onView:vscodeSidebar.openview"

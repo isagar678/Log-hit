@@ -1,4 +1,4 @@
-🐚 Terminal History Runner - VS Code Extension
+🐚 Log-N-Hit - VS Code Extension
 ==========================================
 
 Quickly access and re-run your terminal commands directly from VS Code!This extension fetches and displays your recent commands, including **session-based commands** that haven't yet been written to the history file.
@@ -86,6 +86,6 @@ Found a bug or want to suggest something cool? Open an issue or PR here:[👉 Gi
 📄 License
 ----------
 
-MIT License© 2025 \[Your Name / GitHub Handle\]
+MIT License© 2025 \[Sagar Bharati / @isagar678\]
 
 > Made with ❤️ for terminal power users by Sagar Bharati.
