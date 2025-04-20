@@ -3,7 +3,7 @@
   "displayName": "Log-N-Hit",
   "description": "This Log-N-Hit extension by Sagar helps to manage commands and ease usage of multiple commands with custom editing and searching with beautiful design and fine user experience. The extension is compatible with bash and PowerShell terminals which are present in Windows and Linux systems respectively.",
   "version": "1.0.0",
-  "publisher": "Sagar Bharati",
+  "publisher": "sagar-bharati",
   "homepage": "https://github.com/isagar678/Log-hit",
   "bugs": {
     "url": "https://github.com/isagar678/Log-hit/issues"
@@ -17,8 +17,22 @@
   "engines": {
     "vscode": "^1.61.0"
   },
-  "categories": ["Programming Languages", "Debuggers", "Formatters", "Other", "Notebooks", "Education", "Testing"],
-  "keywords": ["log", "logging", "terminal", "hit", "command"],
+  "categories": [
+    "Programming Languages",
+    "Debuggers",
+    "Formatters",
+    "Other",
+    "Notebooks",
+    "Education",
+    "Testing"
+  ],
+  "keywords": [
+    "log",
+    "logging",
+    "terminal",
+    "hit",
+    "command"
+  ],
   "activationEvents": [
     "onCommand:vscodeSidebar.openview",
     "onView:vscodeSidebar.openview"
@@ -75,16 +89,16 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
-    "@types/vscode": "^1.61.0",
     "@types/glob": "^7.1.4",
     "@types/mocha": "^9.0.0",
     "@types/node": "14.x",
+    "@types/vscode": "^1.61.0",
     "@typescript-eslint/eslint-plugin": "^4.31.1",
     "@typescript-eslint/parser": "^4.31.1",
+    "@vscode/test-electron": "^1.6.2",
     "eslint": "^7.32.0",
-    "glob": "^7.1.7",
+    "glob": "^7.2.3",
     "mocha": "^9.1.1",
-    "typescript": "^4.4.3",
-    "@vscode/test-electron": "^1.6.2"
+    "typescript": "^4.4.3"
   }
 }
