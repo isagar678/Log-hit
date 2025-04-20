@@ -3,7 +3,7 @@
   "displayName": "Log-N-Hit",
   "description": "This Log-N-Hit extension by Sagar helps to manage commands and ease usage of multiple commands with custom editing and searching with beautiful design and fine user experience. The extension is compatible with bash and PowerShell terminals which are present in Windows and Linux systems respectively.",
   "version": "1.0.0",
-  "publisher": "sagar",
+  "publisher": "Sagar Bharati",
   "homepage": "https://github.com/isagar678/Log-hit",
   "bugs": {
     "url": "https://github.com/isagar678/Log-hit/issues"
