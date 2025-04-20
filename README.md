@@ -21,7 +21,7 @@ Quickly access and re-run your terminal commands directly from VS Code!This exte
 ----------
 
 > 
-![Extension Screenshot](https://user-images.githubusercontent.com/yourusername/preview.png)
+![Extension Screenshot](https://drive.google.com/file/d/1UuHJJutxKvppck1o9iPVHNFTOIdT0BQb/view?usp=sharing)
 ⚙️ How It Works
 ---------------
 

@@ -13,6 +13,7 @@
     "type": "git",
     "url": "https://github.com/isagar678/Log-hit.git"
   },
+  "icon": "assets/icon.png",
   "engines": {
     "vscode": "^1.61.0"
   },
