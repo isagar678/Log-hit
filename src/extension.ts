@@ -79,7 +79,7 @@ export function getAllHistory(N: number | string): string[] {
 	try {
 		const commands = fs.readFileSync(historyFilePath, 'utf-8')
 		.split(/\r?\n/)
-		.filter(line => line.trim() !== '' && line!=='history -a')
+		.filter(line => line.trim() !== '' && line!=='history -a' && line!=`Import-Module PSReadLine`)
 		.reverse()	
 		if(typeof(N)== 'number'){
 			return commands.slice(0, N);
