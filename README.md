@@ -21,7 +21,7 @@ Quickly access and re-run your terminal commands directly from VS Code!This exte
 ----------
 
 > 
-![Extension Screenshot](https://drive.google.com/file/d/1UuHJJutxKvppck1o9iPVHNFTOIdT0BQb/view?usp=sharing)
+![Extension Screenshot](https://drive.google.com/uc?export=view&id=1UuHJJutxKvppck1o9iPVHNFTOIdT0BQb)
 ⚙️ How It Works
 ---------------
 
@@ -49,7 +49,7 @@ to **append active session commands to .bash\_history**, ensuring nothing is mis
 
 ### From Marketplace
 
-👉 [Install via VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=yourname.bash-history-runner)
+👉 [Install via VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=sagar-bharati.log-n-hit)
 
 ### From VS Code
 
