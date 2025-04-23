@@ -109,6 +109,17 @@ ul#history-list label {
   color: #aaa;
 }
 
+.favorite-btn {
+  margin-left: 8px;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  font-size: 16px;
+}
+.favorite-btn.favorited {
+  color: gold;
+}
+
 #search-box:focus {
   border-color: var(--accent-color);
 }

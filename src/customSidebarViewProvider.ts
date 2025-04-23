@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { getAllHistory } from "./extension";
+import { getAllHistory, getFavorites, saveFavorites } from "./extension";
 
 export class CustomSidebarViewProvider implements vscode.WebviewViewProvider {
   public static readonly viewType = "vscodeSidebar.openview";
@@ -7,8 +7,10 @@ export class CustomSidebarViewProvider implements vscode.WebviewViewProvider {
 
   constructor(
     private readonly _extensionUri: vscode.Uri,
-    private readonly _sendCommands: (commands: string[]) => void
-  ) { }
+    private readonly _sendCommands: (commands: string[]) => void,
+    private readonly _context: vscode.ExtensionContext
+  ) {}
+  
 
   resolveWebviewView(
     webviewView: vscode.WebviewView,
@@ -26,18 +28,30 @@ export class CustomSidebarViewProvider implements vscode.WebviewViewProvider {
 
     webviewView.webview.onDidReceiveMessage(message => {
       if (message.command === "requestData") {
-        const allFileContents = getAllHistory(message.count || 5);
-        webviewView.webview.postMessage({
-          command: "sendData",
-          data: allFileContents
-        });
+          const count = message.count || 5;
+          const all = getAllHistory(message.count || 5);
+          const favorites = getFavorites(this._context);
+  
+          const dedupedRest = all.filter((cmd: any) => !favorites.includes(cmd));
+          webviewView.webview.postMessage({
+              command: "sendData",
+              data: [...favorites, ...dedupedRest],
+              favorites
+          });
       }
-
-      if (message.command === "runSelectedCommands") {
-        const commands: string[] = message.data;
-        this._sendCommands(commands);
+  
+      if (message.command === "addFavorite") {
+          const favorites = getFavorites(this._context);
+          if (!favorites.includes(message.data)) {
+              saveFavorites(this._context, [...favorites, message.data]);
+          }
       }
-    });
+  
+      if (message.command === "removeFavorite") {
+          const favorites = getFavorites(this._context);
+          saveFavorites(this._context, favorites.filter((f: any) => f !== message.data));
+      }
+  });
   }
 
   private getHtmlContent(webview: vscode.Webview): string {

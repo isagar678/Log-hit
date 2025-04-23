@@ -19,42 +19,55 @@ window.addEventListener('DOMContentLoaded', () => {
     vscode.postMessage({ command: 'requestData', count: selectedCount });
 
     // Create a single list item
-    function createListItem(cmd, index) {
+    function createListItem(cmd, index, isFavorite = false) {
         const li = document.createElement('li');
         li.classList.add('history-item');
-
+    
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.id = `cmd_${index}`;
         checkbox.dataset.cmd = cmd;
-
+    
         const orderSpan = document.createElement('span');
         orderSpan.classList.add('order-number');
         orderSpan.textContent = '';
-
+    
         const input = document.createElement('input');
         input.type = 'text';
         input.value = cmd;
         input.classList.add('command-input');
         input.dataset.index = index;
-
-        // Update selectedCommands if command is changed
+    
+        const starButton = document.createElement('button');
+        starButton.textContent = '⭐';
+        starButton.classList.add('favorite-btn');
+        if (isFavorite) {
+            starButton.classList.add('favorited');
+        }
+        starButton.addEventListener('click', () => {
+            const isNowFavorite = starButton.classList.toggle('favorited');
+            vscode.postMessage({
+                command: isNowFavorite ? 'addFavorite' : 'removeFavorite',
+                data: cmd
+            });
+        });
+    
         input.addEventListener('input', () => {
             if (checkbox.checked) {
                 selectedCommands[Array.from(orderSet).indexOf(checkbox)] = input.value;
             }
         });
-
-
+    
         checkbox.addEventListener('change', handleCheckboxChange);
-
+    
         li.appendChild(orderSpan);
         li.appendChild(checkbox);
         li.appendChild(input);
-
+        li.appendChild(starButton);
+    
         return li;
     }
-
+    
     document.getElementById('search-box').addEventListener('input', (e) => {
         const searchTerm = e.target.value.toLowerCase();
         const allItems = document.querySelectorAll('.history-item');
@@ -99,17 +112,21 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
     // Handle data sent from extension
-    function handleIncomingData(data) {
+    function handleIncomingData(data, favorites = []) {
         const list = document.getElementById('history-list');
         list.innerHTML = '';
-        data.forEach((cmd, i) => list.appendChild(createListItem(cmd, i)));
-    }
+    
+        data.forEach((cmd, i) => {
+            const li = createListItem(cmd, i, favorites.includes(cmd));
+            list.appendChild(li);
+        });
+    }    
 
     // Listen to messages from extension
     window.addEventListener('message', event => {
         const message = event.data;
         if (message.command === 'sendData') {
-            handleIncomingData(message.data);
+            handleIncomingData(message.data, message.favorites);
         }
     });
 

@@ -29,7 +29,8 @@ export function activate(context: vscode.ExtensionContext) {
 	// Register the custom sidebar view
 	const sidebarProvider = new CustomSidebarViewProvider(
 		context.extensionUri,
-		sendCommandsToTerminal
+		sendCommandsToTerminal,
+		context
 	);
 
 	context.subscriptions.push(
@@ -56,37 +57,78 @@ export function activate(context: vscode.ExtensionContext) {
 	);
 }
 
+export function getFavorites(context:any) {
+    return context.globalState.get('favorites', []);
+}
+
+export function saveFavorites(context:any, favorites:any) {
+    return context.globalState.update('favorites', favorites);
+}
+
+
+function readAllLinesUnique(filePath: string, N?: number): string[] {
+	const lines = fs.readFileSync(filePath, 'utf8')
+		.split(/\r?\n/)
+		.map(l => l.trim())
+		.filter(Boolean);
+
+	const seen = new Set<string>();
+	const unique: string[] = [];
+
+	for (const line of lines) {
+		if (!seen.has(line)) {
+			seen.add(line);
+			unique.push(line);
+		}
+	}
+
+	if (typeof N === 'number') {
+		return unique.slice(-N).reverse();
+	}
+
+	return unique;
+}
+
+
 export function getAllHistory(N: number | string): string[] {
 	let historyFilePath: string | undefined;
+	const shell = vscode.env.shell.toLowerCase();
 
 	if (shell.includes('bash')) {
-		// Linux/Mac: Bash history
 		for (const terminal of vscode.window.terminals) {
-			terminal.sendText('history -a')
+			terminal.sendText('history -a');
 		}
-
 		historyFilePath = path.join(os.homedir(), '.bash_history');
-
 	} else if (shell.includes('powershell') || shell.includes('pwsh')) {
-		// Windows: PowerShell history
-		logAndHitTerminal.sendText(`Import-Module PSReadLine`)
-		historyFilePath = path.join(os.homedir(), 'AppData', 'Roaming', 'Microsoft', 'Windows', 'PowerShell', 'PSReadline', 'ConsoleHost_history.txt');
+		historyFilePath = path.join(
+			os.homedir(),
+			'AppData',
+			'Roaming',
+			'Microsoft',
+			'Windows',
+			'PowerShell',
+			'PSReadline',
+			'ConsoleHost_history.txt'
+		);
 	} else {
 		console.warn(`Unknown shell: ${vscode.env.shell}`);
 		return [];
 	}
 
+	if (!historyFilePath || !fs.existsSync(historyFilePath)) {
+		console.warn(`History file not found: ${historyFilePath}`);
+		return [];
+	}
+
 	try {
-		const commands = fs.readFileSync(historyFilePath, 'utf-8')
-		.split(/\r?\n/)
-		.filter(line => line.trim() !== '' && line!=='history -a' && line!=`Import-Module PSReadLine`)
-		.reverse()	
-		if(typeof(N)== 'number'){
-			return commands.slice(0, N);
+		const count = typeof N === 'string' ? parseInt(N) : N;
+		if (!isNaN(count)) {
+			return readAllLinesUnique(historyFilePath, count);
+		} else {
+			return readAllLinesUnique(historyFilePath);
 		}
-		return commands
 	} catch (error) {
-		console.error(`Failed to read history: ${error}`);
+		console.error(`Failed to read history file: ${error}`);
 		return [];
 	}
 }
@@ -126,6 +168,7 @@ function ensurePowerShellHistoryBehavior(): Promise<boolean> {
 					} else {
 						vscode.window.showInformationMessage("ℹ️ History saving is already enabled.");
 					}
+					vscode.window.terminals[0]?.sendText(`Import-Module PSReadLine`);
 
 					resolve(true);
 				} catch (error) {
