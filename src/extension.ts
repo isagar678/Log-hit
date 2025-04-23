@@ -65,7 +65,6 @@ export function saveFavorites(context:any, favorites:any) {
     return context.globalState.update('favorites', favorites);
 }
 
-
 function readAllLinesUnique(filePath: string, N?: number): string[] {
 	const lines = fs.readFileSync(filePath, 'utf8')
 		.split(/\r?\n/)
@@ -135,7 +134,6 @@ export function getAllHistory(N: number | string): string[] {
 
 export function sendCommandsToTerminal(commands: string[]) {
 	logAndHitTerminal.show();
-	console.log('________________________________________')
 	for (let command of commands) {
 		logAndHitTerminal.sendText(command)
 	}

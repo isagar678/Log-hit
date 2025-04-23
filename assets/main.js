@@ -13,6 +13,9 @@ window.addEventListener('DOMContentLoaded', () => {
             selectedCount = e.target.value
         }
         vscode.postMessage({ command: 'requestData', count: selectedCount });
+
+        orderSet.clear()
+        selectedCommands.length=0
     });
 
     // Send request for initial data
@@ -110,7 +113,6 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-
     // Handle data sent from extension
     function handleIncomingData(data, favorites = []) {
         const list = document.getElementById('history-list');
@@ -136,5 +138,16 @@ window.addEventListener('DOMContentLoaded', () => {
             command: 'runSelectedCommands',
             data: selectedCommands
         });
+
+        const allCheckboxes = document.querySelectorAll('.history-item input[type="checkbox"]');
+
+        allCheckboxes.forEach(cb => {
+            cb.checked = false
+            cb.parentNode.querySelector('.order-number').textContent = ''
+        });
+
+        orderSet.clear();
+        selectedCommands.length = 0;
+
     });
 });
