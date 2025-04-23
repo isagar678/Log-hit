@@ -39,7 +39,7 @@ window.addEventListener('DOMContentLoaded', () => {
         input.dataset.index = index;
     
         const starButton = document.createElement('button');
-        starButton.textContent = '⭐';
+        starButton.textContent = '☆';
         starButton.classList.add('favorite-btn');
         if (isFavorite) {
             starButton.classList.add('favorited');

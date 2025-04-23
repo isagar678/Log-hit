@@ -114,6 +114,7 @@ ul#history-list label {
   cursor: pointer;
   background: transparent;
   border: none;
+  color:whitesmoke;
   font-size: 16px;
 }
 .favorite-btn.favorited {
