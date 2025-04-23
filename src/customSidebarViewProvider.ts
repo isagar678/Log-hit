@@ -39,6 +39,10 @@ export class CustomSidebarViewProvider implements vscode.WebviewViewProvider {
               favorites
           });
       }
+      if (message.command === "runSelectedCommands") {
+        const commands: string[] = message.data;
+        this._sendCommands(commands);
+      }
   
       if (message.command === "addFavorite") {
           const favorites = getFavorites(this._context);

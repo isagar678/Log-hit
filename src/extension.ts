@@ -135,7 +135,7 @@ export function getAllHistory(N: number | string): string[] {
 
 export function sendCommandsToTerminal(commands: string[]) {
 	logAndHitTerminal.show();
-
+	console.log('________________________________________')
 	for (let command of commands) {
 		logAndHitTerminal.sendText(command)
 	}
