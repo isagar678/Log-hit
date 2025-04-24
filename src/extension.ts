@@ -94,9 +94,6 @@ export function getAllHistory(N: number | string): string[] {
 	const shell = vscode.env.shell.toLowerCase();
 
 	if (shell.includes('bash')) {
-		for (const terminal of vscode.window.terminals) {
-			terminal.sendText('history -a');
-		}
 		historyFilePath = path.join(os.homedir(), '.bash_history');
 	} else if (shell.includes('powershell') || shell.includes('pwsh')) {
 		historyFilePath = path.join(
@@ -134,12 +131,15 @@ export function getAllHistory(N: number | string): string[] {
 
 export function sendCommandsToTerminal(commands: string[]) {
 	logAndHitTerminal.show();
+
 	for (let command of commands) {
 		logAndHitTerminal.sendText(command)
 	}
+
 	if (shell.includes('bash')) {
 		logAndHitTerminal.sendText(`history -a`)
 	}
+	
 }
 
 function ensurePowerShellHistoryBehavior(): Promise<boolean> {

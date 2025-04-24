@@ -149,5 +149,11 @@ window.addEventListener('DOMContentLoaded', () => {
         orderSet.clear();
         selectedCommands.length = 0;
 
+        setTimeout(() => {
+            vscode.postMessage({
+                command: 'requestData',
+                count: selectedCount
+            });
+        }, 1500);
     });
 });
