@@ -1,7 +1,8 @@
 window.addEventListener('DOMContentLoaded', () => {
     const vscode = acquireVsCodeApi();
-    const selectedCommands = [];
-    const orderSet = new Set();
+    const selectedSet = new Set(); // store selected command strings
+    const selectedCommands = [];   // ordered list of selected command strings
+    
 
     let selectedCount = 5; // default
 
@@ -88,30 +89,39 @@ window.addEventListener('DOMContentLoaded', () => {
         const listItem = checkbox.closest('.history-item');
         const input = listItem.querySelector('.command-input');
         const command = input.value;
-
+    
         if (checkbox.checked) {
-            orderSet.add(checkbox);
-            selectedCommands.push(command);
+            selectedSet.add(command);
         } else {
-            orderSet.delete(checkbox);
-            const index = selectedCommands.indexOf(command);
-            if (index !== -1) selectedCommands.splice(index, 1);
+            selectedSet.delete(command);
         }
-
+    
         updateOrderDisplay();
     }
+    
 
 
     // Update 1,2,3... order display
     function updateOrderDisplay() {
-        const allCheckboxes = document.querySelectorAll('.history-item input[type="checkbox"]');
-
-        allCheckboxes.forEach(cb => {
-            const span = cb.parentNode.querySelector('.order-number');
-            const index = [...orderSet].indexOf(cb);
-            span.textContent = cb.checked && index !== -1 ? `${index + 1}.` : '';
+        const checkboxes = document.querySelectorAll('.history-item input[type="checkbox"]');
+        let count = 1;
+        selectedCommands.length = 0;
+    
+        checkboxes.forEach(cb => {
+            const listItem = cb.closest('.history-item');
+            const input = listItem.querySelector('.command-input');
+            const cmd = input.value;
+            const span = listItem.querySelector('.order-number');
+    
+            if (cb.checked) {
+                selectedCommands.push(cmd);
+                span.textContent = `${count++}.`;
+            } else {
+                span.textContent = '';
+            }
         });
     }
+    
 
     // Handle data sent from extension
     function handleIncomingData(data, favorites = []) {
@@ -138,17 +148,17 @@ window.addEventListener('DOMContentLoaded', () => {
             command: 'runSelectedCommands',
             data: selectedCommands
         });
-
+    
         const allCheckboxes = document.querySelectorAll('.history-item input[type="checkbox"]');
-
+    
         allCheckboxes.forEach(cb => {
-            cb.checked = false
-            cb.parentNode.querySelector('.order-number').textContent = ''
+            cb.checked = false;
+            cb.parentNode.querySelector('.order-number').textContent = '';
         });
-
-        orderSet.clear();
+    
+        selectedSet.clear();
         selectedCommands.length = 0;
-
+    
         setTimeout(() => {
             vscode.postMessage({
                 command: 'requestData',
@@ -156,4 +166,5 @@ window.addEventListener('DOMContentLoaded', () => {
             });
         }, 1500);
     });
+    
 });

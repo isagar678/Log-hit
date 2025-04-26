@@ -83,6 +83,8 @@ function readAllLinesUnique(filePath: string, N?: number): string[] {
 
 	if (typeof N === 'number') {
 		return unique.slice(-N).reverse();
+	}else{
+		unique.reverse()
 	}
 
 	return unique;
